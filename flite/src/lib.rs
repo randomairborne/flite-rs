@@ -7,11 +7,11 @@ use std::ffi::{CString, NulError};
 /// or if the voice or text are not valid `CStrings`.
 /// # Panics
 /// This function panics if flite returns a negative length for the sample count.
-pub fn text_to_wave(text: String, voice: String) -> Result<WaveformAudio, Error> {
+pub fn text_to_wave<'a>(text: impl Into<String>, voice: impl Into<String>) -> Result<WaveformAudio<'a>, Error> {
     let unsafe_wf = unsafe {
         flite_sys::flite_init();
-        let c_text = CString::new(text)?.as_ptr();
-        let c_voice = flite_sys::flite_voice_select(CString::new(voice)?.as_ptr());
+        let c_text = CString::new(text.into())?.as_ptr();
+        let c_voice = flite_sys::flite_voice_select(CString::new(voice.into())?.as_ptr());
         if c_voice.is_null() {
             return Err(Error::NoVoice);
         }
@@ -23,21 +23,25 @@ pub fn text_to_wave(text: String, voice: String) -> Result<WaveformAudio, Error>
         unsafe { *unsafe_wf }
     };
     // flite should never return a negative length
-    let samples: Vec<i16> = Vec::with_capacity(wf.num_samples.try_into().unwrap());
+    let sample_count: usize = wf.num_samples.try_into().unwrap();
+    if wf.samples.is_null() {
+        return Err(Error::SamplesNull);
+    }
+    let samples = unsafe { std::slice::from_raw_parts(wf.samples, sample_count) };
     Ok(WaveformAudio {
         channels: wf.num_channels,
         sample_rate: wf.sample_rate,
-        kind: CString::new("")?,
+        kind: unsafe { CString::from_raw(wf.type_ as *mut i8) },
         samples,
     })
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct WaveformAudio {
+pub struct WaveformAudio<'a> {
     channels: i32,
     sample_rate: i32,
     kind: CString,
-    samples: Vec<i16>,
+    samples: &'a [i16],
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -48,4 +52,16 @@ pub enum Error {
     NoVoice,
     #[error("Text-to-Wave return value was NULL")]
     TextToWaveNull,
+    #[error("Samples in wafeform are NULL")]
+    SamplesNull,
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    #[should_panic]
+    fn invalid_voice() {
+        text_to_wave("Example text", "NAGIGADJG").unwrap();
+    }
 }

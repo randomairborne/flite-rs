@@ -4,21 +4,21 @@ version = 3
 
 [[package]]
 name = "flite"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
- "flite-sys 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "flite-sys 0.1.0",
  "thiserror",
 ]
 
 [[package]]
 name = "flite-sys"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1786f09a38c2487b10419d411cb3b675a30bd89027a8d2dff5269c196d5cd7be"
 
 [[package]]
 name = "flite-sys"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1786f09a38c2487b10419d411cb3b675a30bd89027a8d2dff5269c196d5cd7be"
+version = "0.1.1"
 
 [[package]]
 name = "proc-macro2"

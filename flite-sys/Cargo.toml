@@ -10,6 +10,7 @@ documentation = "https://docs.rs/flite-sys"
 repository = "https://github.com/randomairborne/flite-rs"
 keywords = ["tts", "flite", "text-to-speech"]
 categories = ["multimedia::audio"]
+build = "build.rs"
 
 [dependencies]
 
