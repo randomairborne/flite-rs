@@ -12,5 +12,5 @@ keywords = ["tts", "flite", "text-to-speech"]
 categories = ["multimedia::audio"]
 
 [dependencies]
-flite = "0.0.1"
+flite = "0.0.2"
 hound = "3.5"

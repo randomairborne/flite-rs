@@ -4,9 +4,7 @@ version = 3
 
 [[package]]
 name = "flite"
-version = "0.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "14a2af4c81676d0924dc3e66b8fa7c9faaf2a958a7838d9fc085c374592b5fd6"
+version = "0.0.2"
 dependencies = [
  "flite-sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror",
@@ -15,6 +13,8 @@ dependencies = [
 [[package]]
 name = "flite"
 version = "0.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b324221dba061242f4d8268e9202db7f18c359ef4d4e9bee230e3dd98729cbd7"
 dependencies = [
  "flite-sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror",
@@ -24,7 +24,7 @@ dependencies = [
 name = "flite-cli"
 version = "0.0.1"
 dependencies = [
- "flite 0.0.1",
+ "flite 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "hound",
 ]
 

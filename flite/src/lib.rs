@@ -10,7 +10,8 @@ use std::ffi::{CString, NulError};
 pub fn text_to_wave<'a>(
     text: impl Into<String>,
     voice: impl Into<String>,
-) -> Result<WaveformAudio<'a>, Error> {
+) -> Result<WaveformAudio<'a>, Error>
+{
     let unsafe_wf = unsafe {
         flite_sys::flite_init();
         let c_text = CString::new(text.into())?.as_ptr();
