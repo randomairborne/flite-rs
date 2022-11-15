@@ -5,9 +5,27 @@ version = 3
 [[package]]
 name = "flite"
 version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "14a2af4c81676d0924dc3e66b8fa7c9faaf2a958a7838d9fc085c374592b5fd6"
 dependencies = [
  "flite-sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror",
+]
+
+[[package]]
+name = "flite"
+version = "0.0.2"
+dependencies = [
+ "flite-sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror",
+]
+
+[[package]]
+name = "flite-cli"
+version = "0.0.1"
+dependencies = [
+ "flite 0.0.1",
+ "hound",
 ]
 
 [[package]]
@@ -19,6 +37,12 @@ name = "flite-sys"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b75a23c125fffb2b9b10c32e0decce65829ed239c91987b811f3cdbd6dcde989"
+
+[[package]]
+name = "hound"
+version = "3.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4d13cdbd5dbb29f9c88095bbdc2590c9cba0d0a1269b983fef6b2cdd7e9f4db1"
 
 [[package]]
 name = "proc-macro2"

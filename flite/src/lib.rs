@@ -7,7 +7,10 @@ use std::ffi::{CString, NulError};
 /// or if the voice or text are not valid `CStrings`.
 /// # Panics
 /// This function panics if flite returns a negative length for the sample count.
-pub fn text_to_wave<'a>(text: impl Into<String>, voice: impl Into<String>) -> Result<WaveformAudio<'a>, Error> {
+pub fn text_to_wave<'a>(
+    text: impl Into<String>,
+    voice: impl Into<String>,
+) -> Result<WaveformAudio<'a>, Error> {
     let unsafe_wf = unsafe {
         flite_sys::flite_init();
         let c_text = CString::new(text.into())?.as_ptr();
@@ -24,6 +27,9 @@ pub fn text_to_wave<'a>(text: impl Into<String>, voice: impl Into<String>) -> Re
     };
     // flite should never return a negative length
     let sample_count: usize = wf.num_samples.try_into().unwrap();
+    if wf.samples.is_null() {
+        return Err(Error::SamplesNull);
+    }
     if wf.samples.is_null() {
         return Err(Error::SamplesNull);
     }
@@ -44,6 +50,25 @@ pub struct WaveformAudio<'a> {
     samples: &'a [i16],
 }
 
+impl WaveformAudio<'_> {
+    #[must_use]
+    pub const fn channels(&self) -> i32 {
+        self.channels
+    }
+    #[must_use]
+    pub const fn sample_rate(&self) -> i32 {
+        self.sample_rate
+    }
+    #[must_use]
+    pub const fn kind(&self) -> &CString {
+        &self.kind
+    }
+    #[must_use]
+    pub const fn samples(&self) -> &[i16] {
+        self.samples
+    }
+}
+
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("CString conversion error: {0}")]
@@ -52,8 +77,10 @@ pub enum Error {
     NoVoice,
     #[error("Text-to-Wave return value was NULL")]
     TextToWaveNull,
-    #[error("Samples in wafeform are NULL")]
+    #[error("Samples in waveform are NULL")]
     SamplesNull,
+    #[error("Type in waveform is NULL")]
+    TypeNull,
 }
 
 #[cfg(test)]

@@ -1,6 +1,6 @@
 [package]
-name = "flite"
-version = "0.0.2"
+name = "flite-cli"
+version = "0.0.1"
 edition = "2021"
 authors = ["valkyrie_pilot <valk@randomairborne.dev>"]
 description = "API bindings for flite"
@@ -12,5 +12,5 @@ keywords = ["tts", "flite", "text-to-speech"]
 categories = ["multimedia::audio"]
 
 [dependencies]
-flite-sys = "0.1"
-thiserror = "1"
+flite = "0.0.1"
+hound = "3.5"

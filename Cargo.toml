@@ -1,2 +1,2 @@
 [workspace]
-members = ["flite", "flite-sys"]
+members = ["flite", "flite-sys", "flite-cli"]

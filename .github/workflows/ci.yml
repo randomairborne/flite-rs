@@ -1,0 +1,34 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install flite
+        run: sudo apt install flite
+
+      - name: Cache rust
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install cargo
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy
+
+      - name: Check formatting
+        run: cargo fmt --check
+
+      - name: Check build
+        run: cargo clippy
+
+      - name: Run tests
+        run: cargo test
