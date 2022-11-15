@@ -2,7 +2,14 @@
 name = "flite"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["valkyrie_pilot <valk@randomairborne.dev>"]
+description = "API bindings for flite"
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/flite"
+repository = "https://github.com/randomairborne/flite-rs"
+keywords = ["tts", "flite", "text-to-speech"]
+categories = ["multimedia::audio"]
 
 [dependencies]
+flite-sys = "0.1"
+thiserror = "1"
