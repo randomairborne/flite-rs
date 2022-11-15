@@ -5,6 +5,7 @@ edition = "2021"
 authors = ["valkyrie_pilot <valk@randomairborne.dev>"]
 description = "FFI bindings to flite"
 license = "MIT OR Apache-2.0"
+readme = "README.md"
 documentation = "https://docs.rs/flite-sys"
 repository = "https://github.com/randomairborne/flite-rs"
 keywords = ["tts", "flite", "text-to-speech"]
