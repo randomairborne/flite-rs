@@ -10,8 +10,7 @@ use std::ffi::{CString, NulError};
 pub fn text_to_wave<'a>(
     text: impl Into<String>,
     voice: impl Into<String>,
-) -> Result<WaveformAudio<'a>, Error>
-{
+) -> Result<WaveformAudio<'a>, Error> {
     let unsafe_wf = unsafe {
         flite_sys::flite_init();
         let c_text = CString::new(text.into())?.as_ptr();
@@ -70,19 +69,34 @@ impl WaveformAudio<'_> {
     }
 }
 
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug)]
 pub enum Error {
-    #[error("CString conversion error: {0}")]
-    CStringConversion(#[from] NulError),
-    #[error("There was no voice with the selected name!")]
+    CStringConversion(NulError),
     NoVoice,
-    #[error("Text-to-Wave return value was NULL")]
     TextToWaveNull,
-    #[error("Samples in waveform are NULL")]
     SamplesNull,
-    #[error("Type in waveform is NULL")]
     TypeNull,
 }
+
+impl From<NulError> for Error {
+    fn from(err: NulError) -> Self {
+        Self::CStringConversion(err)
+    }
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
+        match self {
+            Self::CStringConversion(e) => write!(f, "CString Conversion Error: {}", e),
+            Self::NoVoice => write!(f, "There was no voice with the selected name!"),
+            Self::TextToWaveNull => write!(f, "Text-to-Wave return value was NULL"),
+            Self::SamplesNull => write!(f, "Samples in waveform are NULL"),
+            Self::TypeNull => write!(f, "Type in waveform is NULL"),
+        }
+    }
+}
+
+impl std::error::Error for Error {}
 
 #[cfg(test)]
 mod test {
